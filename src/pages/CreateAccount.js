@@ -9,7 +9,7 @@ import { Input, Label, Button } from "@windmill/react-ui";
 function Login() {
   return (
     <div className="flex items-center min-h-screen p-6 bg-white dark:bg-gray-900">
-      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-base-100 rounded-lg shadow-xl dark:bg-gray-800">
+      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-base-100   shadow-xl dark:bg-gray-800">
         <div className="flex flex-col overflow-y-auto md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
             <img

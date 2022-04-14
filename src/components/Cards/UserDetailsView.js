@@ -113,7 +113,7 @@ function UserDetailsView(props) {
           </div>
         </CardBody>
       </Card>
-      <div className="h-full pl-8 pr-8 bg-base-100 rounded-lg">
+      <div className="h-full pl-8 pr-8 bg-base-100  ">
         {settled.length > 0 ? (
           <div className="flex justify-between w-full">
             <div className="p-2 text-lg font-medium text-gray-700 dark:text-gray-200">

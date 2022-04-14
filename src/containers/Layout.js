@@ -7,7 +7,8 @@ import Header from "../components/Header";
 import Main from "../containers/Main";
 import ThemedSuspense from "../components/ThemedSuspense";
 import { SidebarContext } from "../context/SidebarContext";
-import Dashboard from "../pages/Dashboard";
+import PettyCashbook from "../pages/PettyCashbook";
+import InvoicesTabs from "../pages/InvoicesTabs";
 const Page404 = lazy(() => import("../pages/404"));
 
 function Layout() {
@@ -22,14 +23,10 @@ function Layout() {
     <div>
       <Sidebar />
 
-      <div className="absolute w-screen h-screen bg-white">
+      <div className="flex h-full ">
         <Header />
         <Main>
           <Suspense fallback={<ThemedSuspense />}>
-            <div className=" mx-auto mb-4 tabs">
-              <a className="tab tab-bordered tab-active">Cash Book</a>
-              <a className="tab tab-bordered">Employees</a>
-            </div>
             <Switch>
               {routes.map((route, i) => {
                 return route.component ? (
@@ -41,8 +38,8 @@ function Layout() {
                   />
                 ) : null;
               })}
-              <Redirect exact from="/app" to="/app/dashboard" />
-              <Route component={Dashboard} />
+              <Redirect exact from="/" to="/pettycashbook" />
+              <Route component={PettyCashbook} />
             </Switch>
           </Suspense>
         </Main>

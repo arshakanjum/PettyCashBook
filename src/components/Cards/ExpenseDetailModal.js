@@ -68,7 +68,7 @@ function ExpenseDetailModal({ isOpen, onClose, Employee }) {
   const transRef = collection(db, "Transactions");
   const q = query(
     transRef,
-    where("Employee.value", "==", Employee.id?Employee.id:Employee.value)
+    where("Employee.value", "==", Employee.id ? Employee.id : Employee.value)
     // orderBy("Date", "desc")
   );
   useEffect(() => {
@@ -99,8 +99,8 @@ function ExpenseDetailModal({ isOpen, onClose, Employee }) {
       onClose={() => onClose(false)}
       className="pt-8 w-2/3 h-screen overflow-auto scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-100 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
     >
-      <div className="flex flex-col rounded-lg ">
-        {direct.length>0 ? (
+      <div className="flex flex-col   ">
+        {direct.length > 0 ? (
           <ExpenseDetailHeader transactions={direct} />
         ) : (
           <SettlementDetailsView transactions={advance} />

@@ -6,7 +6,6 @@ var conf = {
   content: [
     "./src/*.js",
     "./src/**/*.js",
-    "./*.js",
     "./node_modules/@windmill/react-ui/dist/*.js",
     "./node_modules/@windmill/react-ui/lib/*.js",
   ],
@@ -42,6 +41,9 @@ var conf = {
         210: "210",
         297: "297",
       },
+      screens: {
+        print: { raw: "print" },
+      },
     },
   },
   plugins: [
@@ -51,6 +53,7 @@ var conf = {
     require("flowbite/plugin"),
     require("@tailwindcss/typography"),
     require("daisyui"),
+    require("@benface/tailwindcss-reset"),
   ],
   // daisyui: {
   //   styled: true,

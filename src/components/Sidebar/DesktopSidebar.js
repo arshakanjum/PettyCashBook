@@ -4,7 +4,7 @@ import SidebarContent from "./SidebarContent";
 
 function DesktopSidebar(props) {
   return (
-    <aside className="fixed z-30 hidden w-56 rounded-lg rounded-l-none shadow-lg bg-base-100 h-2/3 top-24 dark:bg-gray-800 lg:block">
+    <aside className="fixed z-30 hidden w-56 m-4 mt-0   shadow-lg bg-base-200 h-2/3 top-24 lg:block">
       <SidebarContent />
     </aside>
   );

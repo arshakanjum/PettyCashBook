@@ -21,6 +21,7 @@ import {
   query,
   QuerySnapshot,
   serverTimestamp,
+  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import CurrencyInput from "react-currency-input-field";
@@ -55,7 +56,7 @@ export default function AddExpenseCard({ isAdvance, onSave }) {
     var arg = {
       Name: Name,
       Amount: Amount,
-      Date: serverTimestamp(),
+      Date: Timestamp.fromDate(new Date()),
       Desc: Desc,
       RVNumber: RVNumber,
       Employee: Emp,
@@ -121,7 +122,7 @@ export default function AddExpenseCard({ isAdvance, onSave }) {
       <label className="label">
         <span className="text-white label-text">Amount</span>
         <CurrencyInput
-          className="w-32 px-2 py-2 text-sm placeholder-purple-300 transition-all duration-150 ease-linear border-2 rounded-lg shadow-md border-1 border-primary text-primary hover:shadow-lg focus:shadow-none focus-outline-purple-400"
+          className="w-32 px-2 py-2 text-sm placeholder-purple-300 transition-all duration-150 ease-linear border-2   shadow-md border-1 border-primary text-primary hover:shadow-lg focus:shadow-none focus-outline-purple-400"
           prefix="QAR "
           id="advance-add-input"
           name="advance-add"
@@ -132,19 +133,23 @@ export default function AddExpenseCard({ isAdvance, onSave }) {
         />
       </label>
 
-      <div className="flex flex-row justify-between w-full align-middle ">
-        {isAdvance ? (
-          <Badge type="warning">Pending</Badge>
-        ) : (
-          <Textarea
-            onChange={(event) => {
-              setDesc(event.target.value);
-            }}
-            className="mt-1 mr-4"
-            rows="2"
-          />
-        )}
-      </div>
+      {isAdvance ? (
+        <Badge type="warning">Pending</Badge>
+      ) : (
+        <>
+          <label className="label">
+            <span className="text-white align-top label-text">Description</span>
+            <textarea
+              class="textarea  "
+              placeholder="Description"
+              onChange={(event) => {
+                setDesc(event.target.value);
+              }}
+            ></textarea>
+          </label>
+        </>
+      )}
+
       <div className="justify-end card-actions">
         <button
           className="btn "

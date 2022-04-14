@@ -34,6 +34,7 @@ function ReceiptVoucher(props) {
             height={40}
             fontSize={10}
             value={transaction.RVNumber}
+            background={"#00000000"}
           />
           <div className="w-1/3 ">
             <img src={VBTLogo} />
@@ -55,7 +56,7 @@ function ReceiptVoucher(props) {
             <br />
           </div>
         </div>
-        <div className="border border-t-2 border-gray-200" />
+        <div className="border border-black border-t-1" />
         <div className="pt-8">
           <p>
             Cash received by{" "}
@@ -88,39 +89,27 @@ function ReceiptVoucher(props) {
             <BillsTable Bills={transaction.Bills} />
           </div>
         ) : null}
-        <div className="flex flex-row justify-between gap-4 align-middle">
-          <div className="w-1/3 text-sm font-semibold leading-loose text-left ">
-            Amount Receive in
-            <small className="flex flex-col text-xs">
-              <Label radio>
-                <Input
-                  type="radio"
-                  value="Cash"
-                  checked={selectedRadio == "Cash"}
-                />
-                <span className="ml-2 font-normal">Cash</span>
-              </Label>
-              <Label radio>
-                <Input
-                  type="radio"
-                  value="Cheque"
-                  checked={selectedRadio == "Cheque"}
-                />
-                <span className="ml-2 font-normal">Cheque</span>
-              </Label>
-              <Label radio>
-                <Input
-                  type="radio"
-                  value="Other"
-                  checked={selectedRadio == "Other"}
-                />
-                <span className="ml-2 font-normal">Other</span>
-              </Label>
+        <div className="flex flex-row gap-4 py-2 ">
+          <div className="w-1/3 text-sm font-semibold leading-loose text-left   ">
+            <div className="block">Amount Receive in</div>
+            <small className="flex flex-col justify-start text-xs">
+              <label class="label p-0 cursor-pointer justify-start">
+                <input type="checkbox" class="checkbox checkbox-xs mr-2" />
+                <span class="label-text">Cash</span>
+              </label>
+              <label class="label p-0 cursor-pointer justify-start">
+                <input type="checkbox" class="checkbox checkbox-xs mr-2" />
+                <span class="label-text">Cheque</span>
+              </label>
+              <label class="label p-0 cursor-pointer justify-start">
+                <input type="checkbox" class="checkbox checkbox-xs mr-2" />
+                <span class="label-text">Other</span>
+              </label>
             </small>
           </div>
           <div className="flex flex-col w-2/3 gap-2 my-auto">
             <div className="flex items-center ">
-              <div className="flex justify-between w-full px-2 bg-gray-200 rounded-lg">
+              <div className="flex justify-between w-full px-2 bg-gray-200  ">
                 <div className="inline-flex text-left">Amount</div>
                 <div className="inline-flex font-medium text-right whitespace-nowrap">
                   QAR {transaction.Amount}
@@ -131,7 +120,7 @@ function ReceiptVoucher(props) {
             {props.isSettlement ? (
               <>
                 <div className="flex items-center justify-end ">
-                  <div className="flex justify-between w-full px-2 bg-gray-200 rounded-lg">
+                  <div className="flex justify-between w-full px-2 bg-gray-200  ">
                     <div className="inline-flex text-left">Settlement</div>
                     <div className="inline-flex font-medium text-right whitespace-nowrap">
                       QAR {transaction.SettlementAmount}
@@ -139,7 +128,7 @@ function ReceiptVoucher(props) {
                   </div>
                 </div>
                 <div className="flex items-center justify-end ">
-                  <div className="flex justify-between w-full px-2 bg-gray-200 rounded-lg">
+                  <div className="flex justify-between w-full px-2 bg-gray-200  ">
                     <div className="inline-flex text-left">Balance</div>
                     <div className="inline-flex font-medium text-right whitespace-nowrap">
                       QAR{" "}
@@ -156,7 +145,7 @@ function ReceiptVoucher(props) {
         <div className="flex justify-start ">
           {transaction.IsAdvance ? (
             <div>
-              <span>Bills to be settled on or before</span>{" "}
+              <span className="text-xs">Bills to be settled on or before</span>{" "}
               <b>
                 {moment(transaction.Date.toDate())
                   .add(7, "days")

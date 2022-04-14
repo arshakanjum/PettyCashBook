@@ -38,6 +38,7 @@ import { useReactToPrint } from "react-to-print";
 import ConfirmationModal from "./ConfirmationModal";
 import { get } from "firebase/database";
 import Table from "react-tailwind-table";
+import TransactionCard from "./TransactionCard";
 function SettlementBalanceTable(props) {
   var Amount = 0,
     Settlement = 0;
@@ -51,24 +52,24 @@ function SettlementBalanceTable(props) {
   return (
     <>
       {/* <Settlements transaction={props.transactions} /> */}
-      <div className="flex justify-between px-4 py-1 mx-4 my-2 bg-gray-100 rounded-lg">
+      <div className="flex justify-between px-4 py-1 mx-4 my-2 bg-gray-100  ">
         <span>Total Amount</span>
         <span>QAR {Amount}</span>
       </div>
       {props.transaction[0].IsAdvance ? (
-        <div className="flex justify-between px-4 py-1 mx-4 my-2 bg-gray-100 rounded-lg">
+        <div className="flex justify-between px-4 py-1 mx-4 my-2 bg-gray-100  ">
           <span>Total Settlement</span>
           <span>QAR {Settlement}</span>
         </div>
       ) : null}
       {props.bills.length > 0 ? (
         Balance >= 0 ? (
-          <div className="flex justify-between px-4 py-1 mx-4 my-2 bg-green-200 rounded-lg">
+          <div className="flex justify-between px-4 py-1 mx-4 my-2 bg-green-200  ">
             <span>Balance Return</span>
             <span>QAR {Balance}</span>
           </div>
         ) : (
-          <div className="flex justify-between px-4 py-1 mx-4 my-2 bg-red-200 rounded-lg">
+          <div className="flex justify-between px-4 py-1 mx-4 my-2 bg-red-200  ">
             <span>Balance Payment</span>
             <span>QAR {Balance}</span>
           </div>
@@ -91,7 +92,7 @@ function TextField(props) {
             [name]: value,
           }));
         }}
-        className="border-gray-200 rounded-md shadow-md bg-purple-50"
+        className="border-gray-200   shadow-md bg-purple-50"
       />
     </Label>
   );
@@ -146,7 +147,7 @@ function NumberField(props) {
         <span className="">{props.label}</span>
 
         <NumberFormat
-          className="border-gray-200 rounded-md shadow-md disabled min-w-2 bg-purple-50"
+          className="border-gray-200   shadow-md disabled min-w-2 bg-purple-50"
           thousandsGroupStyle="thousand"
           prefix="QAR "
           decimalSeparator="."
@@ -236,7 +237,7 @@ export function SettlementsTable(props) {
             <div className="w-full p-4 mx-2 my-auto transition-all sm:w-1/2 lg:w-1/4 xl:w-1/8">
               <div
                 tabindex="0"
-                className="px-4 py-2 bg-purple-200 rounded-lg shadow-lg "
+                className="px-4 py-2 bg-purple-200   shadow-lg "
               >
                 <div className="p-2 mb-2 text-sm font-medium text-center text-gray-700 align-middle bg-purple-100 rounded-full dark:text-gray-200 ">
                   {moment(transaction.Date.toDate()).format("DD-MM-YY")}
@@ -359,7 +360,7 @@ export function BillsTable({ Bills }) {
 }
 // return Object.keys(shapedData).map((key) => (
 
-// <TableContainer className="rounded-lg ">
+// <TableContainer className="  ">
 //   <span className="w-full text-sm font-bold text-center rounded-full ">
 //     {key}
 //   </span>
@@ -462,7 +463,7 @@ function SettlementsEdit(props) {
   return (
     <>
       {Object.keys(shapedData).map((key) => (
-        <TableContainer className="p-2 rounded-lg ">
+        <TableContainer className="p-2   ">
           <span className="text-lg text-center rounded-full ">{key}</span>
           {/* <Table className="w-full table-fixed">
             <TableHeader className="break-normal bg-purple-300 rounded-full text-base-content ">
@@ -546,6 +547,7 @@ function SettlementsEdit(props) {
 }
 
 function SettlementDetailsView(props) {
+  const db = getFirestore(useFirebaseApp());
   const [bills, setBills] = useState([]);
   const [transactions, setTransactions] = useState(props.transactions);
   const [isPrinted, setIsPrinted] = useState(
@@ -553,7 +555,6 @@ function SettlementDetailsView(props) {
   );
   const [IsSettled, setIsSettled] = useState(transactions[0].IsSettled);
   const setRef = collection(db, "Settlements");
-  const db = getFirestore(useFirebaseApp());
   const transRef = collection(db, "Transactions");
   const componentRef = useRef();
   const settlementComponentRef = useRef();
@@ -652,21 +653,19 @@ function SettlementDetailsView(props) {
     newDoc.RVNumber = await getNewRVNumber();
     var setDocRef = await addDoc(setRef, newDoc);
     setNewRVNumber(newDoc.RVNumber);
-    transactions.forEach((x) =>
-      updateDoc(doc(transRef, x.id), {
-        IsSettled: true,
-        Settlement: {
-          id: setDocRef.id,
-          RVNumber: newDoc.RVNumber,
-          SettlementAmount: newDoc.SettlementAmount,
-          Date: newDoc.Date,
-        },
-      })
+    transactions.forEach(
+      async (x) =>
+        await updateDoc(doc(transRef, x.id), {
+          IsSettled: true,
+          Settlement: {
+            id: setDocRef.id,
+            RVNumber: newDoc.RVNumber,
+            SettlementAmount: newDoc.SettlementAmount,
+            Date: newDoc.Date,
+          },
+        })
     );
     setIsSettled(true);
-    props.transactions.map((transaction, idx) => {
-      transaction.settlement = setDocRef.data();
-    });
     props.onSaveSettlement();
   };
 
@@ -706,44 +705,204 @@ function SettlementDetailsView(props) {
 
   return (
     <>
-      {printingLoading ? (
-        <div className="absolute left-50 right-50 top-50 bottom-50">
-          <Backdrop />
-          <Loader />
-        </div>
-      ) : null}
-      <div className="p-2 rounded-lg bg-base-100">
-        <div className="flex justify-end w-full ">
-          {/* <div
-              className="w-6 h-6 m-2 hover:text-primary"
-              onClick={() => props.onClose(false)}
-            >
-              <BackIcon />
-            </div> */}
-          <div className="flex flex-row justify-end w-1/3 m-2">
-            {IsSettled ? (
-              <Button
-                layout="outline"
-                className="mx-2 transition-all min-w-fit"
-                onClick={handleSettlementPrint}
-              >
-                Print Settlement RV
-              </Button>
-            ) : null}
-          </div>
-        </div>
+      {props.transactions[0].IsAdvance && !IsSettled ? (
+        <>
+          {props.transactions.map((transaction, idx) => (
+            <TransactionCard transaction={transaction} />
+          ))}
+          <div className="flex flex-wrap justify-end mx-8 mt-20 border-l-8   shadow-lg bg-base-100 border-primary">
+            <div className="w-full text-white   rounded-l-none bg-primary">
+              <span className="ml-1">Add Bill</span>
+            </div>
+            <div className="w-full px-2 ">
+              <span>Bill Type</span>
+              <div className="space-x-2 gap-x-2 justify-items-start">
+                <button
+                  className={
+                    settlement.SettlementCategory == "Petrol"
+                      ? "btn btn-active"
+                      : "btn btn-outline"
+                  }
+                  onClick={(e) =>
+                    setSettlement((prevState) => ({
+                      ...prevState,
+                      SettlementCategory: "Petrol",
+                    }))
+                  }
+                >
+                  Petrol
+                </button>
+                <button
+                  className={
+                    settlement.SettlementCategory == "Materials & Labors"
+                      ? "btn "
+                      : "btn btn-outline"
+                  }
+                  onClick={(e) =>
+                    setSettlement((prevState) => ({
+                      ...prevState,
+                      SettlementCategory: "Materials & Labors",
+                    }))
+                  }
+                >
+                  Materials & Labors
+                </button>
+                <button
+                  className={
+                    settlement.SettlementCategory == "Other Expenses"
+                      ? "btn "
+                      : "btn btn-outline"
+                  }
+                  onClick={(e) =>
+                    setSettlement((prevState) => ({
+                      ...prevState,
+                      SettlementCategory: "Other Expenses",
+                    }))
+                  }
+                >
+                  Other Expenses
+                </button>
+                <button
+                  className={
+                    settlement.SettlementCategory == "Employee Benefits"
+                      ? "btn "
+                      : "btn btn-outline"
+                  }
+                  onClick={(e) =>
+                    setSettlement((prevState) => ({
+                      ...prevState,
+                      SettlementCategory: "Employee Benefits",
+                    }))
+                  }
+                >
+                  Employee Benefits
+                </button>
+              </div>
+              {settlement.SettlementCategory ? (
+                <div className="inline-flex flex-row w-full mb-1 space-x-2 justify-evenly">
+                  <Label>
+                    <span>Date</span>
 
-        {IsSettled ? (
-          <SettlementsTable
-            transaction={props.transactions}
-            innerRef={settlementComponentRef}
-          />
-        ) : (
+                    <div>
+                      <DatePicker
+                        className="purple"
+                        value={settlement.Date}
+                        onChange={setDate}
+                        numberOfMonths={2}
+                        format="DD/MM/YYYY"
+                        render={(value, openCalendar) => {
+                          return (
+                            <Input
+                              value={value}
+                              onFocus={openCalendar}
+                              className="w-full border-gray-200   shadow-md bg-purple-50"
+                            />
+                          );
+                        }}
+                      />
+                    </div>
+                  </Label>
+                  <TextField
+                    name={"Number"}
+                    valueSet={setSettlement}
+                    label={"Invoice Number"}
+                  />
+                  {settlement.SettlementCategory != "Other Expenses" ? (
+                    <Label>
+                      <span>Amount</span>
+                      <NumberFormat
+                        className="border-gray-200   shadow-md bg-purple-50"
+                        thousandsGroupStyle="thousand"
+                        prefix="QAR "
+                        decimalSeparator="."
+                        displayType="input"
+                        type="text"
+                        thousandSeparator={true}
+                        allowNegative={false}
+                        placeholder="QAR "
+                        customInput={Input}
+                        defaultValue={0}
+                        onValueChange={handleAmountChange}
+                        name="Amount"
+                      />
+                    </Label>
+                  ) : null}
+                  {settlement.SettlementCategory == "Petrol" ? (
+                    <TextField
+                      valueSet={setSettlement}
+                      label={"Vehicle Number"}
+                      name={"Vehicle"}
+                    />
+                  ) : settlement.SettlementCategory == "Materials & Labors" ? (
+                    <>
+                      <CreatableSelectFields valueSet={setSettlement} />
+                      <Label>
+                        .<span>Description</span>
+                        <Textarea
+                          onChange={handleChange}
+                          name="Desc"
+                          className="mr-2 border-gray-200   shadow-md bg-purple-50"
+                          rows="1"
+                        />
+                      </Label>
+                    </>
+                  ) : settlement.SettlementCategory == "Other Expenses" ? (
+                    <>
+                      <NumberField
+                        valueSet={setSettlement}
+                        label={"Stationary"}
+                        name={"Stationary"}
+                      />
+                      <NumberField
+                        valueSet={setSettlement}
+                        label={"Tools & Consumables"}
+                        name={"ToolsConsumables"}
+                      />
+                      <NumberField
+                        valueSet={setSettlement}
+                        label={"Vehicle Expenses"}
+                        name={"Vehicle"}
+                      />
+                      <NumberField
+                        valueSet={setSettlement}
+                        label={"Miscellaneous"}
+                        name={"Miscellaneous"}
+                      />
+                    </>
+                  ) : (
+                    <Label>
+                      <span>Description</span>
+                      <Textarea
+                        onChange={handleChange}
+                        name="Desc"
+                        className="mr-2 border-gray-200   shadow-md bg-purple-50"
+                        rows="1"
+                      />
+                    </Label>
+                  )}
+                </div>
+              ) : null}
+            </div>
+            <div className="flex w-1/3 gap-2 p-2 space-x-2 ">
+              <Button
+                onClick={props.onClose}
+                layout="outline"
+                className="w-1/2 "
+              >
+                Cancel
+              </Button>
+              <Button onClick={AddBill} layout="primary" className="w-1/2">
+                Add
+              </Button>
+            </div>
+          </div>
           <>
-            <SettlementBalanceTable
-              transaction={props.transactions}
-              bills={bills}
-            />
+            <div className="mt-4">
+              <SettlementBalanceTable
+                transaction={props.transactions}
+                bills={bills}
+              />
+            </div>
 
             <SettlementsEdit transaction={props.transactions} bills={bills} />
             {bills.length > 0 ? (
@@ -758,192 +917,7 @@ function SettlementDetailsView(props) {
               </div>
             ) : null}
           </>
-        )}
-      </div>
-
-      {props.transactions[0].IsAdvance && !IsSettled ? (
-        <div className="flex flex-wrap justify-end mx-8 mt-2 border-l-8 rounded-lg shadow-lg bg-base-100 border-primary">
-          <div className="w-full text-white rounded-lg rounded-l-none bg-primary">
-            <span className="ml-1">Add Bill</span>
-          </div>
-          <div className="w-full px-2 ">
-            <span>Bill Type</span>
-            <div className="space-x-2 gap-x-2 justify-items-start">
-              <button
-                className={
-                  settlement.SettlementCategory == "Petrol"
-                    ? "btn btn-active"
-                    : "btn btn-outline"
-                }
-                onClick={(e) =>
-                  setSettlement((prevState) => ({
-                    ...prevState,
-                    SettlementCategory: "Petrol",
-                  }))
-                }
-              >
-                Petrol
-              </button>
-              <button
-                className={
-                  settlement.SettlementCategory == "Materials & Labors"
-                    ? "btn "
-                    : "btn btn-outline"
-                }
-                onClick={(e) =>
-                  setSettlement((prevState) => ({
-                    ...prevState,
-                    SettlementCategory: "Materials & Labors",
-                  }))
-                }
-              >
-                Materials & Labors
-              </button>
-              <button
-                className={
-                  settlement.SettlementCategory == "Other Expenses"
-                    ? "btn "
-                    : "btn btn-outline"
-                }
-                onClick={(e) =>
-                  setSettlement((prevState) => ({
-                    ...prevState,
-                    SettlementCategory: "Other Expenses",
-                  }))
-                }
-              >
-                Other Expenses
-              </button>
-              <button
-                className={
-                  settlement.SettlementCategory == "Employee Benefits"
-                    ? "btn "
-                    : "btn btn-outline"
-                }
-                onClick={(e) =>
-                  setSettlement((prevState) => ({
-                    ...prevState,
-                    SettlementCategory: "Employee Benefits",
-                  }))
-                }
-              >
-                Employee Benefits
-              </button>
-            </div>
-            {settlement.SettlementCategory ? (
-              <div className="inline-flex flex-row w-full mb-1 space-x-2 justify-evenly">
-                <Label>
-                  <span>Date</span>
-
-                  <div>
-                    <DatePicker
-                      className="purple"
-                      value={settlement.Date}
-                      onChange={setDate}
-                      numberOfMonths={2}
-                      format="DD/MM/YYYY"
-                      render={(value, openCalendar) => {
-                        return (
-                          <Input
-                            value={value}
-                            onFocus={openCalendar}
-                            className="w-full border-gray-200 rounded-md shadow-md bg-purple-50"
-                          />
-                        );
-                      }}
-                    />
-                  </div>
-                </Label>
-                <TextField
-                  name={"Number"}
-                  valueSet={setSettlement}
-                  label={"Invoice Number"}
-                />
-                {settlement.SettlementCategory != "Other Expenses" ? (
-                  <Label>
-                    <span>Amount</span>
-                    <NumberFormat
-                      className="border-gray-200 rounded-md shadow-md bg-purple-50"
-                      thousandsGroupStyle="thousand"
-                      prefix="QAR "
-                      decimalSeparator="."
-                      displayType="input"
-                      type="text"
-                      thousandSeparator={true}
-                      allowNegative={false}
-                      placeholder="QAR "
-                      customInput={Input}
-                      defaultValue={0}
-                      onValueChange={handleAmountChange}
-                      name="Amount"
-                    />
-                  </Label>
-                ) : null}
-                {settlement.SettlementCategory == "Petrol" ? (
-                  <TextField
-                    valueSet={setSettlement}
-                    label={"Vehicle Number"}
-                    name={"Vehicle"}
-                  />
-                ) : settlement.SettlementCategory == "Materials & Labors" ? (
-                  <>
-                    <CreatableSelectFields valueSet={setSettlement} />
-                    <Label>
-                      .<span>Description</span>
-                      <Textarea
-                        onChange={handleChange}
-                        name="Desc"
-                        className="mr-2 border-gray-200 rounded-md shadow-md bg-purple-50"
-                        rows="1"
-                      />
-                    </Label>
-                  </>
-                ) : settlement.SettlementCategory == "Other Expenses" ? (
-                  <>
-                    <NumberField
-                      valueSet={setSettlement}
-                      label={"Stationary"}
-                      name={"Stationary"}
-                    />
-                    <NumberField
-                      valueSet={setSettlement}
-                      label={"Tools & Consumables"}
-                      name={"ToolsConsumables"}
-                    />
-                    <NumberField
-                      valueSet={setSettlement}
-                      label={"Vehicle Expenses"}
-                      name={"Vehicle"}
-                    />
-                    <NumberField
-                      valueSet={setSettlement}
-                      label={"Miscellaneous"}
-                      name={"Miscellaneous"}
-                    />
-                  </>
-                ) : (
-                  <Label>
-                    <span>Description</span>
-                    <Textarea
-                      onChange={handleChange}
-                      name="Desc"
-                      className="mr-2 border-gray-200 rounded-md shadow-md bg-purple-50"
-                      rows="1"
-                    />
-                  </Label>
-                )}
-              </div>
-            ) : null}
-          </div>
-          <div className="flex w-1/3 gap-2 p-2 space-x-2 ">
-            <Button onClick={props.onClose} layout="outline" className="w-1/2 ">
-              Cancel
-            </Button>
-            <Button onClick={AddBill} layout="primary" className="w-1/2">
-              Add
-            </Button>
-          </div>
-        </div>
+        </>
       ) : null}
     </>
   );

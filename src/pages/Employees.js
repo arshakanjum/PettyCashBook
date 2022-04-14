@@ -44,6 +44,7 @@ import AddEmployeeCard from "../components/Cards/AddEmployeeCard";
 import { textIndexToArray } from "../firebase";
 import ExpenseDetailModal from "../components/Cards/ExpenseDetailModal";
 import UserDetailsView from "../components/Cards/UserDetailsView";
+import { GrFormAdd } from "react-icons/gr";
 
 function DepartmentFilterHeader(props) {
   var deptName;
@@ -72,43 +73,50 @@ function DepartmentFilterHeader(props) {
   const [isAddMode, setIsAddMode] = useState(false);
   return (
     <div className="flex justify-center mb-4 align-middle md:justify-start">
-      <Button
-        className="mr-2"
-        layout={props.selectedDept == "All" ? "primary" : "outline"}
+      <div
+        className={
+          props.selectedDept == "All"
+            ? "mr-2 btn btn-primary btn-sm"
+            : "mr-2 btn btn-outline btn-sm"
+        }
         onClick={() => {
           props.setSelectedDept("All");
         }}
       >
         All
-      </Button>
+      </div>
       {props.deptList.map((deptName, i) => (
-        <Button
-          className="mr-2"
-          layout={props.selectedDept == deptName ? "primary" : "outline"}
+        <div
+          className={
+            props.selectedDept == deptName
+              ? "mr-2 btn btn-neutral btn-sm"
+              : "mr-2 btn btn-outline btn-sm"
+          }
           onClick={() => {
             props.setSelectedDept(deptName);
           }}
         >
           {deptName}
-        </Button>
+        </div>
       ))}
       {!isAddMode ? (
-        <Button
-          icon={AddIcon}
-          layout="link"
-          aria-label="Add"
+        <button
+          class="btn btn-square btn-sm btn-outline"
           onClick={() => setIsAddMode(true)}
-        />
+        >
+          <GrFormAdd />
+        </button>
       ) : (
-        <div className="flex w-1/3">
-          <Input
-            className="w-20 mr-4 bg-transparent rounded-lg"
+        <div className="flex w-1/3 btn-group">
+          <input
+            type="text"
             placeholder="Enter Department Name"
+            class="input input-sm input-bordered w-1/2 max-w-xs"
             onChange={(event) => (deptName = event.target.value)}
           />
-          <Button className="mr-8" onClick={addDept}>
+          <div className="btn btn-primary btn-sm" onClick={addDept}>
             Save
-          </Button>
+          </div>
         </div>
       )}
     </div>
@@ -160,67 +168,37 @@ function Employees() {
   } else {
     deptList = config.Departments;
     return (
-      <div>
-        <Modal
-          isOpen={isDetailsOpen}
-          onClose={() => setIsDetailsOpen(false)}
-          className="relative w-2/3 h-full"
-        >
-          {isDetailsOpen ? (
-            <UserDetailsView
-              Employee={user}
-              isOpen={isDetailsOpen}
-              onClose={setIsDetailsOpen}
-            />
-          ) : null}
-        </Modal>
-
-        <div className="flex flex-row justify-between align-middle ">
-          <PageTitle className="text-purple-600">Employees</PageTitle>
-          <div className="my-6">
-            <Button className="mx-2">
-              Add Employee
-              <span className="ml-2" aria-hidden="true">
-                +
-              </span>
-            </Button>
-            {/* <Button layout="outline" className="mx-2 text-purple-600 ">
-              Add Department
-              <span className="ml-2" aria-hidden="true">
-                +
-              </span>
-            </Button> */}
-          </div>
-        </div>
+      <div className="w-full p-8">
+        <PageTitle className="text-primary">Employees</PageTitle>
         <DepartmentFilterHeader
           selectedDept={selectedDept}
           setSelectedDept={setSelectedDept}
           deptList={deptList}
         ></DepartmentFilterHeader>
         {!employees ? null : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
             {employees.map((user, i) => (
-              <Card
+              <div
                 onClick={(e) => onEmployeeClick(user)}
-                className="h-24 m-2 shadow-sm hover:bg-purple-200 hover:shadow-lg"
+                className="shadow-md h-28 card bg-neutral text-neutral-content hover:bg-neutral-focus hover:shadow-lg"
               >
-                <CardBody className="flex items-center">
+                <div className="flex flex-row items-center card-body">
                   <RoundIcon
                     icon={OutlinePersonIcon}
-                    iconColorClass="text-primary dark:text-purple-100"
-                    bgColorClass="bg-purple-100 dark:bg-primary"
+                    iconColorClass="text-neutral"
+                    bgColorClass="bg-neutral-content "
                     className="mr-4"
                   />
                   <div>
-                    <p className="font-semibold text-gray-700 text-md dark:text-gray-200 ">
+                    <p className="font-semibold text-neutral-content text-md ">
                       {user.Name}
                     </p>
-                    <p className="text-sm text-gray-700 dark:text-gray-200 ">
+                    <p className="text-sm text-neutral-content ">
                       {user.EmpId}
                     </p>
                   </div>
-                </CardBody>
-              </Card>
+                </div>
+              </div>
             ))}
             <AddEmployeeCard
               deptList={deptList}

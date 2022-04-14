@@ -75,7 +75,7 @@ function TransactionCard({
   }
   if (loading) {
     return (
-      <div className="block w-full p-2 transition-all rounded-lg bg-base-100 ">
+      <div className="block w-full p-2 transition-all   bg-base-100 ">
         <Loader />
       </div>
     );
@@ -83,15 +83,15 @@ function TransactionCard({
   return (
     <div
       onClick={() => onClick(transaction)}
-      className={
-        "card p-2 m-2 bg-base-100 shadow-sm border-l-2 " +
-        (isSelected ? " shadow-lg bg-accent " : "") +
-        (transaction.IsAdvance
-          ? transaction.IsSettled
-            ? " border-green-300"
-            : " border-red-400"
-          : "border-blue-300")
-      }
+      className={`card p-2 m-2  shadow-sm border-l-2  +
+        ${isSelected ? " shadow-lg bg-neutral text-neutral-content " : ""} +
+        ${
+          transaction.IsAdvance
+            ? transaction.IsSettled
+              ? "border-green-300"
+              : "border-red-400"
+            : "border-blue-300"
+        }`}
     >
       <div
         // onClick={() => onClick(transaction)}
@@ -99,18 +99,16 @@ function TransactionCard({
         className={isSelected ? null : null}
       >
         {showDate ? (
-          <div className="p-2 mb-2 text-sm font-medium text-center text-gray-700 align-middle bg-purple-100 rounded-full dark:text-gray-200 ">
+          <div className="p-2 mb-2 text-sm font-medium text-center align-middle rounded-full bg-neutral dark:text-gray-200 ">
             {moment(transaction.Date.toDate()).format("DD-MM-YY")}
           </div>
         ) : null}
         <div>
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <p className="font-semibold text-gray-700 text-md dark:text-gray-200 ">
-                {transaction.RVNumber}
-              </p>
+              <p className="font-semibold text-md ">{transaction.RVNumber}</p>
 
-              <div className="text-sm text-left text-gray-700 dark:text-gray-200">
+              <div className="text-sm text-left ">
                 Expense: QAR{" "}
                 <span className="font-semibold text-md">
                   {transaction.Amount}
@@ -120,13 +118,13 @@ function TransactionCard({
               transaction.IsSettled &&
               transaction.Settlement ? (
                 <>
-                  <div className="text-sm text-left text-gray-700 dark:text-gray-200">
+                  <div className="text-sm text-left ">
                     Settlement: QAR{" "}
                     <span className="font-semibold text-md">
                       {transaction.Settlement.SettlementAmount}
                     </span>
                   </div>
-                  <div className="text-sm text-left text-gray-700 dark:text-gray-200">
+                  <div className="text-sm text-left ">
                     {Number(transaction.Amount) -
                       Number(transaction.Settlement.SettlementAmount) >
                     0 ? (
@@ -145,15 +143,15 @@ function TransactionCard({
             </div>
             <div className="inline-flex ">
               <div className="my-auto text-right">
-                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200 ">
-                  {transaction.Employee.label ?? transaction.Name}
+                <p className="text-sm font-semibold ">
+                  {transaction.Employee.label
+                    ? transaction.Employee.label
+                    : transaction.Name}
                 </p>
-                <p className="text-xs text-gray-700 dark:text-gray-200 ">
-                  {transaction.Employee.dept}
-                </p>
+                <p className="text-xs ">{transaction.Employee.dept}</p>
               </div>
               <div className="avatar placeholder">
-                <div className="bg-neutral-focus text-neutral-content rounded-full w-8 my-auto ml-2">
+                <div className="w-8 my-auto ml-2 rounded-full bg-neutral-focus text-neutral-content">
                   <span className="text-xs">
                     {transaction.Employee.label
                       ? transaction.Employee.label

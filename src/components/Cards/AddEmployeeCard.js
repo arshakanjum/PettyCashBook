@@ -35,114 +35,123 @@ function AddEmployeeCard({ deptList, addEmployee, selectedDept }) {
   const [showAddCard, setShowAddCard] = useState(false);
   if (!showAddCard) {
     return (
-      <div className="flex justify-start w-full ">
-        <Button
-          className="mr-2 text-primary rounded-lg w-full"
-          layout="outline"
-          onClick={() => {
-            setShowAddCard(true);
-          }}
-        >
-          <AddPersonIcon className=" w-5 h-5" />
-        </Button>
-        {/* <RoundIcon
-          icon={AddPersonIcon}
-          iconColorClass="text-purple-800 dark:text-purple-100"
-          bgColorClass="bg-purple-100 hover:bg-primary dark:bg-primary"
-        /> */}
+      <div
+        className=" h-28 card btn btn-outline btn-neutral"
+        layout="outline"
+        onClick={() => {
+          setShowAddCard(true);
+        }}
+      >
+        <AddPersonIcon className="w-5 h-5 " />
       </div>
     );
   } else {
     return (
-      <Card className="shadow-lg">
-        <CardBody>
-          <div
-            className="h-6 justify-end relative left-2 top-2  text-purple-400 hover:text-purple-700 hover:h-8"
-            onClick={() => setShowAddCard(false)}
-          >
-            <AiOutlineClose />
+      <div className="border-2 shadow-md w-96 bg-base-200-lg card">
+        <div className="card-body">
+          <div class="card-actions justify-end">
+            <button
+              class="btn btn-square btn-sm"
+              onClick={() => setShowAddCard(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
-          <RoundIcon
-            className="w-12 m-auto p-auto"
-            icon={AddPersonIcon}
-            iconColorClass="text-purple-800 dark:text-purple-100"
-            bgColorClass="bg-purple-200 dark:bg-primary"
-          />
-          <div className="text-primary rounded-lg w-full">
-            <Label>
-              <span>Employee ID</span>
-              <Input
-                className=" rounded-lg border-1 ease-linear transition-all duration-150 w-full"
+          <div className="w-full   text-primary">
+            <div class="form-control w-full max-w-xs">
+              <label class="label">
+                <span class="label-text">Employee ID</span>
+              </label>
+              <input
+                type="text"
                 placeholder="ID"
+                class="input input-bordered w-full max-w-xs"
                 onChange={(event) => {
                   empId = event.target.value;
                 }}
               />
-            </Label>
-            <Label className="  mt-2">
-              <span>Name</span>
-              <Input
-                className=" rounded-lg border-1 ease-linear transition-all duration-150 "
+              <label class="label">
+                <span class="label-text">Name</span>
+              </label>
+              <input
+                type="text"
                 placeholder="Name"
+                class="input input-bordered w-full max-w-xs"
                 onChange={(event) => {
                   name = event.target.value;
                 }}
               />
-            </Label>
-            <Label className="mt-2 ">
-              <span>Department</span>
+              <label class="label">
+                <span class="label-text">Department</span>
+              </label>
               <CreatableSelect
                 isClearable
-                theme={(theme) => ({
-                  ...theme,
-                  spacing: {
-                    baseUnit: 2,
-                    controlHeight: 38,
-                    menuGutter: 4,
-                  },
-                  borderColor: "#d8b4fe",
-                  borderRadius: 8,
-                  colors: {
-                    ...theme.colors,
-                    primary25: "#e9d5ff",
-                    primary: "#a855f7",
-                  },
-                })}
+                // theme={(theme) => ({
+                //   ...theme,
+                //   spacing: {
+                //     baseUnit: 2,
+                //     controlHeight: 38,
+                //     menuGutter: 4,
+                //   },
+                //   borderColor: "#d8b4fe",
+                //   borderRadius: 8,
+                //   colors: {
+                //     ...theme.colors,
+                //     primary25: "#e9d5ff",
+                //     primary: "#a855f7",
+                //   },
+                // })}
                 onChange={handleDeptChange}
                 onInputChange={handleDeptInputChange}
                 options={deptSelectData}
               />
-            </Label>
-            <Label className="mt-2 ">
-              <span>Email</span>
-              <Input
-                className=" rounded-lg border-1 ease-linear transition-all duration-150  "
+              <label class="label">
+                <span class="label-text">Email</span>
+              </label>
+              <input
+                type="text"
                 placeholder="Email"
+                class="input input-bordered w-full max-w-xs"
                 onChange={(event) => {
                   email = event.target.value;
                 }}
               />
-            </Label>
-            <Button
-              className="mt-4 w-full h-full "
-              onClick={() => {
-                addEmployee(
-                  {
-                    Name: name,
-                    Email: email,
-                    Dept: dept,
-                    EmpId: empId,
-                  },
-                  isNewDept
-                );
-                setShowAddCard(false);
-              }}
-            >
-              <span aria-hidden="true">Save</span>
-            </Button>
+            </div>
+            <div class="card-actions mt-4 justify-end">
+              <button
+                class="btn"
+                onClick={() => {
+                  addEmployee(
+                    {
+                      Name: name,
+                      Email: email,
+                      Dept: dept,
+                      EmpId: empId,
+                    },
+                    isNewDept
+                  );
+                  setShowAddCard(false);
+                }}
+              >
+                Save
+              </button>
+            </div>
           </div>
-        </CardBody>
-      </Card>
+        </div>
+      </div>
     );
   }
 }

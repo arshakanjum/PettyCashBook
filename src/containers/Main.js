@@ -2,8 +2,10 @@ import React from "react";
 
 function Main({ children }) {
   return (
-    <main className="h-full ">
-      <div className="grid pt-32 pr-10 pl-72 ">{children}</div>
+    <main className="fixed items-center w-full ">
+      <div className="flex flex-col justify-start w-full pt-24 pl-64 h-screen">
+        {children}
+      </div>
     </main>
   );
 }

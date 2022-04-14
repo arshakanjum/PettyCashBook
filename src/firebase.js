@@ -3,16 +3,14 @@ import { FirebaseApp, initializeApp } from "firebase/app";
 import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 import moment from "moment";
 const firebaseConfig = {
-  apiKey: "AIzaSyDg85NAb8X3AFT9uGj0HGgwolSTNshHpp4",
-  authDomain: "petty-cash-book-1c2cf.firebaseapp.com",
-  projectId: "petty-cash-book-1c2cf",
-  storageBucket: "petty-cash-book-1c2cf.appspot.com",
-  messagingSenderId: "582898892986",
-  appId: "1:582898892986:web:95602c196a936716b48283",
+  apiKey: "AIzaSyBTkbLiepCKD1ldsZuUqhKRWEoljSM2rGA",
+  authDomain: "betty-f5e9a.firebaseapp.com",
+  projectId: "betty-f5e9a",
+  storageBucket: "betty-f5e9a.appspot.com",
+  messagingSenderId: "671068804417",
+  appId: "1:671068804417:web:745d9c006f92c09630bdc0",
 };
-const firebaseApp = initializeApp(firebaseConfig);
-
-console.log("test");
+var firebaseApp = initializeApp(firebaseConfig);
 export default firebaseConfig;
 
 export const textIndexToArray = (str) => {
@@ -26,7 +24,7 @@ export const textIndexToArray = (str) => {
 
 export async function getNewRVNumber() {
   var db = getFirestore(firebaseApp);
-  const docRef = doc(db, "Transactions", "RVNumber");
+  const docRef = doc(db, "Data", "config");
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     var data = docSnap.data();
@@ -57,4 +55,39 @@ export async function setNewRVNumber(RVNumber) {
   var db = getFirestore(firebaseApp);
   const docRef = doc(db, "Transactions", "RVNumber");
   await updateDoc(docRef, { RVNumber: RVNumber });
+}
+
+export async function getNewInvoiceNumber() {
+  var db = getFirestore(firebaseApp);
+  const docRef = doc(db, "Data", "config");
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    var data = docSnap.data();
+    var lastRV = data.InvoiceNumber;
+    var next = lastRV.replace(
+      /(RV)(\d+)-(\d+)+/,
+      function (fullMatch, pre, n, post) {
+        var nextNum = Number(n) + 1;
+        var yearDigits = moment().format("YY");
+        if (post != yearDigits) {
+          post = yearDigits;
+          nextNum = 1;
+        }
+        var digits = nextNum.toString().length;
+        if (digits <= 4) {
+          n = String(nextNum).padStart(4, "0");
+        }
+        return `${pre}${n}-${post}`;
+      }
+    );
+    return next;
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+  }
+}
+export async function setNewInvoiceNumber(InvoiceNumber) {
+  var db = getFirestore(firebaseApp);
+  const docRef = doc(db, "Data", "config");
+  await updateDoc(docRef, { InvoiceNumber: InvoiceNumber });
 }

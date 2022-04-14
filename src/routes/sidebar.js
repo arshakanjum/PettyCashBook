@@ -7,25 +7,31 @@
  */
 const routes = [
   {
-    path: "/app/dashboard", // the url
+    path: "/app/pettycashbook", // the url
+    icon: "MenuIcon", // the component being exported from icons/index.js
+    name: "Petty Cashbook", // name that appear in Sidebar
+  },
+  {
+    path: "/app/invoices", // the url
     icon: "HomeIcon", // the component being exported from icons/index.js
-    name: "Dashboard", // name that appear in Sidebar
+    name: "Invoices", // name that appear in Sidebar
   },
   {
-    path: "/app/Cashbook", // the url
-    icon: "MenuIcon", // the component being exported from icons/index.js
-    name: "Cashbook", // name that appear in Sidebar
+    path: "/app/AMC", // the url
+    icon: "HomeIcon", // the component being exported from icons/index.js
+    name: "Annual Maintanence Contracts", // name that appear in Sidebar
   },
-  {
-    path: "/app/Employees", // the url
-    icon: "PeopleIcon", // the component being exported from icons/index.js
-    name: "Employees", // name that appear in Sidebar
-  },
-  {
-    path: "/app/Reports", // the url
-    icon: "MenuIcon", // the component being exported from icons/index.js
-    name: "Reports", // name that appear in Sidebar
-  },
+  // {
+  //   path: "/app/Cashbook", // the url
+  //   icon: "MenuIcon", // the component being exported from icons/index.js
+  //   name: "Cashbook", // name that appear in Sidebar
+  // },
+  // {
+  //   path: "/app/Employees", // the url
+  //   icon: "PeopleIcon", // the component being exported from icons/index.js
+  //   name: "Employees", // name that appear in Sidebar
+  // },
+
   // {
   //   path: '/app/forms',
   //   icon: 'FormsIcon',

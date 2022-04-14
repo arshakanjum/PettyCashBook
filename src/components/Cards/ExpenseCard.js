@@ -170,14 +170,14 @@ export function AddRow({
       ) : (
         <TableCell>
           <Input
-            className="w-full px-2 py-2 text-sm placeholder-purple-300 transition-all duration-150 ease-linear border-2 rounded-lg shadow-md border-1 border-primary text-primary hover:shadow-lg focus:shadow-none focus-outline-purple-400"
+            className="w-full px-2 py-2 text-sm placeholder-purple-300 transition-all duration-150 ease-linear border-2   shadow-md border-1 border-primary text-primary hover:shadow-lg focus:shadow-none focus-outline-purple-400"
             onChange={(e) => setName(e.target.value)}
           />
         </TableCell>
       )}
       <TableCell>
         <CurrencyInput
-          className="w-full px-2 py-2 text-sm placeholder-purple-300 transition-all duration-150 ease-linear border-2 rounded-lg shadow-md border-1 border-primary text-primary hover:shadow-lg focus:shadow-none focus-outline-purple-400"
+          className="w-full px-2 py-2 text-sm placeholder-purple-300 transition-all duration-150 ease-linear border-2   shadow-md border-1 border-primary text-primary hover:shadow-lg focus:shadow-none focus-outline-purple-400"
           prefix="QAR "
           id="advance-add-input"
           name="advance-add"
@@ -234,7 +234,7 @@ export default function ExpenseCard({
   });
   return (
     <TableContainer className="h-auto">
-      <Table className="items-center w-full h-auto border-collapse table-fixed rounded-2xl bg-base-100 ">
+      <Table className="items-center w-full h-auto border-collapse table-fixed   bg-base-100 ">
         <TableHeader className="text-purple-100 bg-purple-600 ">
           <tr>
             {isAdvance ? (

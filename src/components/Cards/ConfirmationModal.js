@@ -13,7 +13,7 @@ function ConfirmationModal({
   selectedRadio,
   isSettlemnt,
 }) {
-  const [selected, setSelected] = useState(selectedRadio ?? "");
+  const [selected, setSelected] = useState(selectedRadio ? selectedRadio : "");
   const onChangeRadio = (e) => {
     setSelected(e.target.value);
     setSelectedRadio(e.target.value);
@@ -24,17 +24,14 @@ function ConfirmationModal({
       onClose={() => onClose(false)}
       className="w-1/3 h-full overflow-auto pt-96 scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-100 scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
     >
-      <div className="flex flex-col justify-between p-4 align-middle bg-base-100 border-2 border-primary rounded-lg shadow-2xl">
+      <div className="flex flex-col justify-between p-4 align-middle border-2   shadow-2xl bg-base-100 border-primary">
         <div className="w-full">
           Confirm Cash Received by <u>Arshak Anjum</u> for{" "}
           <u>Advance-Petty Cash</u>
         </div>
 
         <div className="flex flex-row justify-between mt-2">
-          <div
-            className="p-2 text-left bg-gray-200 rounded-xl"
-            onChange={onChangeRadio}
-          >
+          <div className="p-2 text-left bg-gray-200  " onChange={onChangeRadio}>
             Amount Receive in
             <small className="flex flex-row justify-start gap-2 text-xs">
               <Label radio>
@@ -59,7 +56,7 @@ function ConfirmationModal({
               </Label>
             </small>
           </div>
-          <div className="w-1/3 p-2 text-sm text-gray-100 bg-primary rounded-xl dark:text-gray-200 ">
+          <div className="w-1/3 p-2 text-sm text-gray-100 bg-primary   dark:text-gray-200 ">
             Amount
             <div className="font-semibold text-left text-md">QAR 200</div>
           </div>

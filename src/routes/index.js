@@ -1,12 +1,13 @@
 import { lazy } from "react";
+import PettyCashTabs from "../pages/PettyCashTabs";
+const InvoicesTabs = lazy(() => import("../pages/InvoicesTabs"));
 
 // use lazy for better code splitting, a.k.a. load faster
 const Employees = lazy(() => import("../pages/Employees"));
-const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Page404 = lazy(() => import("../pages/404"));
 const Blank = lazy(() => import("../pages/Blank"));
-const Cashbook = lazy(() => import("../pages/Cashbook"));
-const Forms = lazy(() => import("../pages/Forms"));
+const PettyCashbook = lazy(() => import("../pages/PettyCashbook"));
+const AMC = lazy(() => import("../pages/AMC"));
 // const Cards = lazy(() => import('../pages/Cards'))
 // const Charts = lazy(() => import('../pages/Charts'))
 // const Buttons = lazy(() => import('../pages/Buttons'))
@@ -23,8 +24,8 @@ const Forms = lazy(() => import("../pages/Forms"));
  */
 const routes = [
   {
-    path: "/dashboard", // the url
-    component: Dashboard, // view rendered
+    path: "/invoices", // the url
+    component: InvoicesTabs, // view rendered
   },
   {
     path: "/employees",
@@ -39,12 +40,12 @@ const routes = [
     component: Blank,
   },
   {
-    path: "/Cashbook",
-    component: Cashbook,
+    path: "/pettycashbook",
+    component: PettyCashTabs,
   },
   {
-    path: "/Reports",
-    component: Forms,
+    path: "/amc",
+    component: AMC,
   },
   // {
   //   path: '/forms',
